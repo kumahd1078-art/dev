@@ -1,0 +1,1796 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kumail Dev — Academic Result Lookup</title>
+
+<style>
+:root{
+  --bg:#f7f4ed;
+  --paper:#fffdf9;
+  --ink:#171717;
+  --muted:#77746d;
+  --line:#e7e1d6;
+  --orange:#ff6b19;
+  --green:#24b874;
+  --black:#050706;
+  --shadow:0 18px 55px rgba(24,20,12,.08);
+}
+
+*{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  background:var(--bg);
+}
+
+button,input{font:inherit}
+button{cursor:pointer}
+
+.container{
+  width:min(1120px,calc(100% - 40px));
+  margin:auto;
+}
+
+/* NAV */
+
+nav{
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  z-index:5;
+  padding:0 28px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+}
+
+.brand-mark{
+  width:31px;
+  height:31px;
+  border-radius:10px;
+  background:#111;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-size:15px;
+}
+
+.navlinks{
+  display:flex;
+  gap:8px;
+}
+
+.navlinks a{
+  color:#444;
+  text-decoration:none;
+  padding:9px 13px;
+  border:1px solid transparent;
+  border-radius:999px;
+  font-size:13px;
+}
+
+.navlinks a:hover{
+  border-color:var(--line);
+  background:#fff;
+}
+
+.nav-search{
+  border:0;
+  background:#090a09;
+  color:#fff;
+  border-radius:999px;
+  padding:11px 17px;
+  font-size:12px;
+}
+
+/* HERO */
+
+.hero{
+  min-height:650px;
+  display:flex;
+  align-items:center;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 48%,#fff 0,#fbf8f1 45%,#eee7d8 100%);
+}
+
+.hero:before{
+  content:"";
+  position:absolute;
+  inset:-20%;
+  background:
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      transparent 0 110px,
+      rgba(100,95,80,.06) 111px 112px
+    );
+  opacity:.6;
+}
+
+.hero-inner{
+  position:relative;
+  z-index:1;
+  width:min(760px,100%);
+  margin:70px auto 0;
+}
+
+.eyebrow{
+  font-size:12px;
+  color:var(--orange);
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.hero h1{
+  font-size:clamp(42px,6vw,72px);
+  line-height:.98;
+  font-weight:500;
+  letter-spacing:-.055em;
+  margin:16px 0;
+}
+
+.hero h1 span{
+  color:var(--orange);
+}
+
+.hero p{
+  max-width:650px;
+  margin:0 auto 30px;
+  color:#777;
+  line-height:1.7;
+}
+
+.searchbox{
+  display:flex;
+  gap:8px;
+  background:#fff;
+  border:1px solid #e3ddd2;
+  border-radius:999px;
+  padding:7px;
+  box-shadow:var(--shadow);
+  max-width:680px;
+  margin:auto;
+}
+
+.searchbox input{
+  flex:1;
+  border:0;
+  outline:0;
+  padding:0 15px;
+  background:transparent;
+  min-width:0;
+}
+
+.searchbox button{
+  border:0;
+  background:#080908;
+  color:#fff;
+  border-radius:999px;
+  padding:14px 22px;
+}
+
+.under-search{
+  display:flex;
+  justify-content:center;
+  gap:9px;
+  margin-top:12px;
+}
+
+.under-search button{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:999px;
+  padding:8px 14px;
+  font-size:12px;
+}
+
+.error{
+  color:#c0392b;
+  margin-top:12px;
+  font-size:13px;
+  min-height:18px;
+}
+
+/* SECTIONS */
+
+.section{
+  padding:100px 0;
+}
+
+.split{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:center;
+}
+
+.section h2{
+  font-size:42px;
+  line-height:1.05;
+  letter-spacing:-.04em;
+  font-weight:500;
+  margin:12px 0 20px;
+}
+
+.section p{
+  color:#73706a;
+  line-height:1.7;
+}
+
+.badge{
+  display:inline-block;
+  border:1px solid #ffd1bb;
+  background:#fff7f1;
+  color:var(--orange);
+  border-radius:999px;
+  padding:7px 11px;
+  font-size:11px;
+  font-weight:800;
+}
+
+.workflow-card,
+.result-preview{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:25px;
+}
+
+.steps{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-top:30px;
+}
+
+.step{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:13px;
+  padding:20px;
+  min-height:150px;
+}
+
+.step b{
+  display:block;
+  margin:18px 0 8px;
+}
+
+.step span{
+  font-size:12px;
+  color:#777;
+  line-height:1.55;
+}
+
+.num{
+  font-size:11px;
+  color:var(--orange);
+  font-weight:800;
+}
+
+/* DARK SECTION */
+
+.dark{
+  background:#030504;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+}
+
+.dark:before{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:240px;
+  bottom:-30px;
+  left:0;
+  background:
+    radial-gradient(ellipse at 10% 80%,rgba(255,130,0,.28),transparent 35%),
+    radial-gradient(ellipse at 55% 75%,rgba(25,170,255,.22),transparent 35%),
+    radial-gradient(ellipse at 90% 70%,rgba(0,255,150,.2),transparent 35%);
+  filter:blur(18px);
+}
+
+.dark .container{
+  position:relative;
+}
+
+.dark p{
+  color:#aaa;
+}
+
+.features{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  border:1px solid #292d2a;
+  border-radius:16px;
+  overflow:hidden;
+  margin-top:45px;
+}
+
+.feature{
+  padding:25px;
+  border-right:1px solid #292d2a;
+}
+
+.feature:last-child{
+  border-right:0;
+}
+
+.feature .icon{
+  font-size:23px;
+}
+
+.feature h3{
+  font-size:15px;
+  margin:17px 0 8px;
+}
+
+.feature p{
+  font-size:12px;
+  margin:0;
+}
+
+.ledger{
+  display:grid;
+  grid-template-columns:1fr 2fr;
+  gap:25px;
+  border:1px solid #292d2a;
+  border-radius:16px;
+  margin-top:22px;
+  padding:25px;
+}
+
+.ledger ul{
+  margin:0;
+  padding:0;
+  list-style:none;
+  display:grid;
+  gap:11px;
+}
+
+.ledger li{
+  font-size:12px;
+  color:#bfc4c0;
+}
+
+.ledger li:before{
+  content:"✓";
+  color:#41d991;
+  margin-right:8px;
+}
+
+/* RESULTS */
+
+.result-section{
+  padding:80px 0;
+  background:#fbfaf6;
+}
+
+.result-shell{
+  display:none;
+}
+
+.result-shell.visible{
+  display:block;
+}
+
+.result-top{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:flex-start;
+  margin-bottom:25px;
+}
+
+.result-title h2{
+  margin:8px 0;
+  font-size:35px;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+}
+
+.action{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:10px;
+  padding:11px 15px;
+  font-size:12px;
+}
+
+.action.primary{
+  background:#111;
+  color:#fff;
+  border-color:#111;
+}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:22px;
+}
+
+.stat{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:18px;
+}
+
+.stat small{
+  color:#888;
+}
+
+.stat strong{
+  display:block;
+  font-size:27px;
+  margin-top:7px;
+}
+
+.table-wrap{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:15px;
+  overflow:auto;
+}
+
+.result-table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:720px;
+}
+
+.result-table th,
+.result-table td{
+  text-align:left;
+  padding:14px 16px;
+  border-bottom:1px solid #eee9e0;
+  font-size:12px;
+}
+
+.result-table th{
+  background:#faf8f2;
+  color:#777;
+}
+
+.grade{
+  font-weight:800;
+}
+
+.sem-header{
+  background:#f5f2eb;
+  font-weight:800;
+}
+
+/* FAQ */
+
+.faq{
+  background:#faf8f3;
+}
+
+.faq-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+.faq-item{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:20px;
+}
+
+.faq-item b{
+  font-size:13px;
+}
+
+.faq-item p{
+  font-size:12px;
+  margin-bottom:0;
+}
+
+/* CTA */
+
+.cta{
+  margin-top:65px;
+  border-radius:5px;
+  background:linear-gradient(100deg,#31bb78,#4acb8d);
+  padding:35px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:#fff;
+}
+
+.cta h2{
+  font-size:31px;
+  margin:0;
+}
+
+.cta button{
+  background:#fff;
+  border:0;
+  border-radius:999px;
+  padding:13px 20px;
+}
+
+/* FOOTER */
+
+footer{
+  padding:55px 0;
+  background:#f7f4ed;
+  border-top:1px solid var(--line);
+}
+
+.footer-row{
+  display:flex;
+  justify-content:space-between;
+  gap:30px;
+}
+
+.footer-links{
+  display:flex;
+  gap:18px;
+  font-size:12px;
+}
+
+.footer-links a{
+  color:#666;
+  text-decoration:none;
+}
+
+.copyright{
+  border-top:1px solid var(--line);
+  margin-top:35px;
+  padding-top:20px;
+  color:#999;
+  font-size:11px;
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  display:none;
+  place-items:center;
+  z-index:30;
+  padding:20px;
+}
+
+.modal.show{
+  display:grid;
+}
+
+.modal-card{
+  background:#fff;
+  border-radius:18px;
+  width:min(620px,100%);
+  padding:28px;
+}
+
+.modal-card h3{
+  margin-top:0;
+}
+
+.form-row{
+  display:flex;
+  gap:8px;
+}
+
+.form-row input{
+  flex:1;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px;
+}
+
+.form-row button{
+  border:0;
+  border-radius:10px;
+  background:#111;
+  color:#fff;
+  padding:0 18px;
+}
+
+.close{
+  float:right;
+  border:0;
+  background:#f4f1eb;
+  border-radius:50%;
+  width:30px;
+  height:30px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:800px){
+
+  .navlinks{
+    display:none;
+  }
+
+  .hero{
+    min-height:610px;
+  }
+
+  .split{
+    grid-template-columns:1fr;
+    gap:30px;
+  }
+
+  .steps,
+  .features,
+  .stat-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .ledger{
+    grid-template-columns:1fr;
+  }
+
+  .faq-grid{
+    grid-template-columns:1fr;
+  }
+
+  .result-top,
+  .cta,
+  .footer-row{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .section{
+    padding:70px 0;
+  }
+
+  .hero h1{
+    font-size:45px;
+  }
+
+  .searchbox{
+    border-radius:18px;
+  }
+}
+
+@media(max-width:520px){
+
+  .container{
+    width:min(100% - 24px,1120px);
+  }
+
+  nav{
+    padding:0 14px;
+  }
+
+  .nav-search{
+    padding:9px 12px;
+  }
+
+  .steps,
+  .features,
+  .stat-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero-inner{
+    margin-top:55px;
+  }
+
+  .hero h1{
+    font-size:40px;
+  }
+
+  .searchbox{
+    flex-direction:column;
+    border-radius:17px;
+  }
+
+  .searchbox button{
+    width:100%;
+  }
+
+  .cta{
+    padding:27px;
+  }
+
+  .cta h2{
+    font-size:25px;
+  }
+}
+
+/* PRINT */
+
+@media print{
+
+  nav,
+  .hero,
+  .section:not(#results),
+  .faq,
+  footer,
+  .actions,
+  .cta{
+    display:none!important;
+  }
+
+  .result-section{
+    padding:0;
+  }
+
+  .result-shell{
+    display:block!important;
+  }
+
+  .container{
+    width:100%;
+  }
+
+  .table-wrap{
+    box-shadow:none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+
+  <div class="brand">
+    <div class="brand-mark">K</div>
+    <span>Kumail Dev</span>
+  </div>
+
+  <div class="navlinks">
+    <a href="#home">Home</a>
+    <a href="#workflow">Study Tools</a>
+    <a href="#results">Results</a>
+    <a href="#faq">About</a>
+  </div>
+
+  <button class="nav-search" onclick="focusSearch()">
+    Search & Discover →
+  </button>
+
+</nav>
+
+<header class="hero" id="home">
+
+  <div class="hero-inner">
+
+    <div class="eyebrow">
+      Kumail Dev · Academic Result Tool
+    </div>
+
+    <h1>
+      Search your result.<br>
+      Read your <span>CGPA</span><br>
+      clearly.
+    </h1>
+
+    <p>
+      Enter a registration number below to load the semester results,
+      CGPA, course details, and a clean printable academic record.
+    </p>
+
+    <form class="searchbox" id="searchForm">
+
+      <input
+        id="regInput"
+        autocomplete="off"
+        placeholder="Enter registration number · e.g. 2020-1234"
+      >
+
+      <button type="submit">
+        Search →
+      </button>
+
+    </form>
+
+    <div class="under-search">
+
+      <button type="button" onclick="openNameSearch()">
+        ♙ Search by Name
+      </button>
+
+      <button type="button" onclick="loadDemo()">
+        View Demo Result
+      </button>
+
+    </div>
+
+    <div class="error" id="error"></div>
+
+  </div>
+
+</header>
+
+<section class="section" id="workflow">
+
+<div class="container">
+
+  <div class="split">
+
+    <div>
+
+      <span class="badge">
+        How it works
+      </span>
+
+      <h2>
+        From raw result rows to a readable semester record.
+      </h2>
+
+      <p>
+        Kumail Dev turns result data into a clean, organized academic
+        record in just a few steps. This front-end currently includes
+        a demo dataset and is structured so you can connect your own
+        result API later.
+      </p>
+
+    </div>
+
+    <div class="workflow-card">
+
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#777;margin-bottom:20px">
+        <b>● Fetch</b>
+        <b>◌ Process</b>
+        <b>✓ Display</b>
+      </div>
+
+      <div class="result-preview">
+
+        <b>
+          Sample Academic Record
+        </b>
+
+        <div style="height:8px;background:#eeeae2;border-radius:99px;margin:15px 0"></div>
+
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;font-size:11px;color:#777">
+
+          <span>Computer Science</span>
+          <span>A</span>
+          <span style="color:#1b9d68">Pass</span>
+
+          <span>Mathematics</span>
+          <span>B+</span>
+          <span style="color:#1b9d68">Pass</span>
+
+          <span>Physics</span>
+          <span>A-</span>
+          <span style="color:#1b9d68">Pass</span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+
+      <div class="num">
+        01 · FIND
+      </div>
+
+      <b>
+        Find the record
+      </b>
+
+      <span>
+        Provide a registration number or search by student name.
+      </span>
+
+    </div>
+
+    <div class="step">
+
+      <div class="num">
+        02 · NORMALIZE
+      </div>
+
+      <b>
+        Normalize courses
+      </b>
+
+      <span>
+        Courses, credits and grades are mapped into one consistent record.
+      </span>
+
+    </div>
+
+    <div class="step">
+
+      <div class="num">
+        03 · ANALYZE
+      </div>
+
+      <b>
+        Read the trend
+      </b>
+
+      <span>
+        See semester CGPA, grades and overall academic progress.
+      </span>
+
+    </div>
+
+    <div class="step">
+
+      <div class="num">
+        04 · EXPORT
+      </div>
+
+      <b>
+        Export / print
+      </b>
+
+      <span>
+        Print the complete result as a clean PDF from your browser.
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
+
+</section>
+
+<section class="section dark">
+
+<div class="container">
+
+  <div class="split">
+
+    <div>
+
+      <span
+        class="badge"
+        style="background:#06281a;border-color:#12613e;color:#38d58d"
+      >
+        Academic Analysis
+      </span>
+
+      <h2>
+        The result table becomes a controlled academic ledger.
+      </h2>
+
+    </div>
+
+    <p>
+      Semester marks, grades, credit hours and calculated CGPA are
+      organized into a structured table that is easy to read,
+      analyze and export.
+    </p>
+
+  </div>
+
+  <div class="features">
+
+    <div class="feature">
+
+      <div class="icon">▤</div>
+
+      <h3>
+        Semester sequence
+      </h3>
+
+      <p>
+        View semesters in order with course details and grades.
+      </p>
+
+    </div>
+
+    <div class="feature">
+
+      <div class="icon">▥</div>
+
+      <h3>
+        Best attempts
+      </h3>
+
+      <p>
+        See the strongest marks and improved performance.
+      </p>
+
+    </div>
+
+    <div class="feature">
+
+      <div class="icon">▦</div>
+
+      <h3>
+        Credit weighting
+      </h3>
+
+      <p>
+        Calculate CGPA using course credit hours.
+      </p>
+
+    </div>
+
+    <div class="feature">
+
+      <div class="icon">◇</div>
+
+      <h3>
+        Attendance import
+      </h3>
+
+      <p>
+        Reserved for connecting attendance data later.
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="ledger">
+
+    <div>
+
+      <h3 style="margin-top:0">
+        One table for the decisions students keep making.
+      </h3>
+
+    </div>
+
+    <ul>
+
+      <li>
+        Track overall and semester-wise CGPA.
+      </li>
+
+      <li>
+        Find missing attempts and retake details.
+      </li>
+
+      <li>
+        Print a clean academic record.
+      </li>
+
+      <li>
+        Keep the interface simple and private.
+      </li>
+
+    </ul>
+
+  </div>
+
+</div>
+
+</section>
+
+<section class="result-section" id="results">
+
+<div class="container">
+
+  <div
+    id="emptyResults"
+    style="text-align:center;padding:35px 0"
+  >
+
+    <span class="badge">
+      Result lookup
+    </span>
+
+    <h2 style="font-weight:500;font-size:35px">
+      Your academic record will appear here.
+    </h2>
+
+    <p style="color:#777">
+      Search using the form above, or load the demo result to test the tool.
+    </p>
+
+  </div>
+
+  <div class="result-shell" id="resultShell">
+
+    <div class="result-top">
+
+      <div class="result-title">
+
+        <span class="badge">
+          Academic Result
+        </span>
+
+        <h2 id="studentName">
+          —
+        </h2>
+
+        <div
+          id="studentMeta"
+          style="color:#777;font-size:13px"
+        >
+          —
+        </div>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="action"
+          onclick="clearResult()"
+        >
+          Clear
+        </button>
+
+        <button
+          class="action primary"
+          onclick="window.print()"
+        >
+          Export / Print PDF
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="stat-grid">
+
+      <div class="stat">
+
+        <small>
+          Overall CGPA
+        </small>
+
+        <strong id="cgpa">
+          —
+        </strong>
+
+      </div>
+
+      <div class="stat">
+
+        <small>
+          Total Credits
+        </small>
+
+        <strong id="credits">
+          —
+        </strong>
+
+      </div>
+
+      <div class="stat">
+
+        <small>
+          Semesters
+        </small>
+
+        <strong id="semesters">
+          —
+        </strong>
+
+      </div>
+
+      <div class="stat">
+
+        <small>
+          Status
+        </small>
+
+        <strong id="status">
+          —
+        </strong>
+
+      </div>
+
+    </div>
+
+    <div class="table-wrap">
+
+      <table class="result-table">
+
+        <thead>
+
+          <tr>
+            <th>Semester</th>
+            <th>Course</th>
+            <th>Code</th>
+            <th>Credit</th>
+            <th>Grade</th>
+            <th>Points</th>
+            <th>Status</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="resultBody"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
+
+</section>
+
+<section class="section faq" id="faq">
+
+<div class="container">
+
+  <div style="text-align:center">
+
+    <span class="badge">
+      FAQ
+    </span>
+
+    <h2>
+      Practical answers before you export.
+    </h2>
+
+  </div>
+
+  <div class="faq-grid">
+
+    <div class="faq-item">
+
+      <b>
+        How does Kumail Dev find a result?
+      </b>
+
+      <p>
+        The demo uses local sample records. Connect your university/API
+        endpoint to make lookup live.
+      </p>
+
+    </div>
+
+    <div class="faq-item">
+
+      <b>
+        Can I remove a course from CGPA?
+      </b>
+
+      <p>
+        The calculator uses the course credits and grade points supplied
+        by the record.
+      </p>
+
+    </div>
+
+    <div class="faq-item">
+
+      <b>
+        Does PDF keep the semester numbering?
+      </b>
+
+      <p>
+        Yes. Browser print preserves the displayed semester order and table.
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="cta">
+
+    <h2>
+      Turn the next result lookup into a clean academic record.
+    </h2>
+
+    <button onclick="focusSearch()">
+      Search Result →
+    </button>
+
+  </div>
+
+</div>
+
+</section>
+
+<footer>
+
+<div class="container">
+
+  <div class="footer-row">
+
+    <div>
+
+      <div class="brand">
+
+        <div class="brand-mark">
+          K
+        </div>
+
+        <span>
+          Kumail Dev
+        </span>
+
+      </div>
+
+      <p style="color:#777;font-size:12px;max-width:420px">
+        Result lookup · CGPA tracker · Academic tools.
+        Simple, secure and reliable.
+      </p>
+
+    </div>
+
+    <div class="footer-links">
+
+      <a href="#home">
+        Home
+      </a>
+
+      <a href="#workflow">
+        Study Tools
+      </a>
+
+      <a href="#results">
+        Results
+      </a>
+
+      <a href="#faq">
+        Contact
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="copyright">
+    © 2026 Kumail Dev. Built as an academic result lookup interface.
+  </div>
+
+</div>
+
+</footer>
+
+<div class="modal" id="nameModal">
+
+  <div class="modal-card">
+
+    <button
+      class="close"
+      onclick="closeNameSearch()"
+    >
+      ×
+    </button>
+
+    <h3>
+      Search by student name
+    </h3>
+
+    <p style="color:#777;font-size:13px">
+      Try a name from the demo dataset.
+    </p>
+
+    <form class="form-row" id="nameForm">
+
+      <input
+        id="nameInput"
+        placeholder="e.g. Kumail Khan"
+      >
+
+      <button>
+        Search
+      </button>
+
+    </form>
+
+    <div
+      id="nameError"
+      class="error"
+    ></div>
+
+  </div>
+
+</div>
+
+<script>
+
+const records = [
+
+  {
+    reg:"2020-1234",
+    name:"Kumail Khan",
+    program:"BS Computer Science",
+    session:"2020–2024",
+    status:"Completed",
+
+    semesters:[
+
+      {
+        name:"Semester 1",
+
+        courses:[
+          ["Programming Fundamentals","CS101",3,"A",4.0],
+          ["Calculus & Analytical Geometry","MTH101",3,"B+",3.5],
+          ["English Composition","ENG101",3,"A-",3.7],
+          ["Pakistan Studies","PAK101",2,"A",4.0]
+        ]
+      },
+
+      {
+        name:"Semester 2",
+
+        courses:[
+          ["Object Oriented Programming","CS102",3,"A-",3.7],
+          ["Discrete Structures","CS103",3,"B+",3.5],
+          ["Probability & Statistics","STA101",3,"A",4.0],
+          ["Communication Skills","ENG102",2,"A",4.0]
+        ]
+      },
+
+      {
+        name:"Semester 3",
+
+        courses:[
+          ["Data Structures","CS201",3,"A",4.0],
+          ["Database Systems","CS202",3,"A-",3.7],
+          ["Linear Algebra","MTH201",3,"B+",3.5],
+          ["Technical Writing","ENG201",2,"A",4.0]
+        ]
+      },
+
+      {
+        name:"Semester 4",
+
+        courses:[
+          ["Operating Systems","CS301",3,"A-",3.7],
+          ["Software Engineering","CS302",3,"A",4.0],
+          ["Computer Networks","CS303",3,"B+",3.5],
+          ["Web Engineering","CS304",3,"A",4.0]
+        ]
+      }
+
+    ]
+  },
+
+  {
+    reg:"2021-5678",
+    name:"Ayesha Malik",
+    program:"BS Information Technology",
+    session:"2021–2025",
+    status:"Completed",
+
+    semesters:[
+
+      {
+        name:"Semester 1",
+
+        courses:[
+          ["Intro to IT","IT101",3,"A",4],
+          ["Programming","IT102",3,"A-",3.7],
+          ["Calculus","MTH101",3,"B+",3.5]
+        ]
+      },
+
+      {
+        name:"Semester 2",
+
+        courses:[
+          ["Data Communication","IT201",3,"A",4],
+          ["Database","IT202",3,"A-",3.7],
+          ["Statistics","STA101",3,"A",4]
+        ]
+      }
+
+    ]
+  }
+
+];
+
+function focusSearch(){
+
+  document
+    .getElementById("regInput")
+    .focus();
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+function openNameSearch(){
+
+  document
+    .getElementById("nameModal")
+    .classList
+    .add("show");
+
+  document
+    .getElementById("nameInput")
+    .focus();
+
+}
+
+function closeNameSearch(){
+
+  document
+    .getElementById("nameModal")
+    .classList
+    .remove("show");
+
+}
+
+function loadDemo(){
+
+  showRecord(records[0]);
+
+  document
+    .getElementById("results")
+    .scrollIntoView({
+      behavior:"smooth"
+    });
+
+}
+
+function clearResult(){
+
+  document
+    .getElementById("resultShell")
+    .classList
+    .remove("visible");
+
+  document
+    .getElementById("emptyResults")
+    .style
+    .display="block";
+
+}
+
+function calc(record){
+
+  let totalPoints=0;
+  let totalCredits=0;
+
+  for(const semester of record.semesters){
+
+    for(const course of semester.courses){
+
+      totalPoints += course[2] * course[4];
+
+      totalCredits += course[2];
+
+    }
+
+  }
+
+  return {
+
+    cgpa:(totalPoints / totalCredits).toFixed(2),
+
+    credits:totalCredits
+
+  };
+
+}
+
+function showRecord(record){
+
+  const calculated = calc(record);
+
+  document
+    .getElementById("emptyResults")
+    .style
+    .display="none";
+
+  document
+    .getElementById("resultShell")
+    .classList
+    .add("visible");
+
+  document
+    .getElementById("studentName")
+    .textContent=record.name;
+
+  document
+    .getElementById("studentMeta")
+    .textContent=
+      `${record.reg} · ${record.program} · ${record.session}`;
+
+  document
+    .getElementById("cgpa")
+    .textContent=calculated.cgpa;
+
+  document
+    .getElementById("credits")
+    .textContent=calculated.credits;
+
+  document
+    .getElementById("semesters")
+    .textContent=record.semesters.length;
+
+  document
+    .getElementById("status")
+    .textContent=record.status;
+
+  let body="";
+
+  for(const semester of record.semesters){
+
+    body += `
+      <tr class="sem-header">
+        <td colspan="7">
+          ${semester.name}
+        </td>
+      </tr>
+    `;
+
+    for(const course of semester.courses){
+
+      body += `
+        <tr>
+
+          <td>
+            ${semester.name}
+          </td>
+
+          <td>
+            ${course[0]}
+          </td>
+
+          <td>
+            ${course[1]}
+          </td>
+
+          <td>
+            ${course[2]}
+          </td>
+
+          <td class="grade">
+            ${course[3]}
+          </td>
+
+          <td>
+            ${course[4].toFixed(1)}
+          </td>
+
+          <td style="color:#159765;font-weight:700">
+            Pass
+          </td>
+
+        </tr>
+      `;
+
+    }
+
+  }
+
+  document
+    .getElementById("resultBody")
+    .innerHTML=body;
+
+}
+
+function searchRecord(query){
+
+  query=query.trim().toLowerCase();
+
+  return (
+
+    records.find(
+      record =>
+        record.reg.toLowerCase()===query
+    )
+
+    ||
+
+    records.find(
+      record =>
+        record.name.toLowerCase().includes(query)
+    )
+
+  );
+
+}
+
+document
+  .getElementById("searchForm")
+  .addEventListener("submit",function(event){
+
+    event.preventDefault();
+
+    const query=
+      document
+        .getElementById("regInput")
+        .value;
+
+    const record=
+      searchRecord(query);
+
+    if(!record){
+
+      document
+        .getElementById("error")
+        .textContent=
+          "No demo record found. Try 2020-1234 or use “View Demo Result”.";
+
+      return;
+
+    }
+
+    document
+      .getElementById("error")
+      .textContent="";
+
+    showRecord(record);
+
+    document
+      .getElementById("results")
+      .scrollIntoView({
+        behavior:"smooth"
+      });
+
+  });
+
+document
+  .getElementById("nameForm")
+  .addEventListener("submit",function(event){
+
+    event.preventDefault();
+
+    const record=
+      searchRecord(
+        document
+          .getElementById("nameInput")
+          .value
+      );
+
+    if(!record){
+
+      document
+        .getElementById("nameError")
+        .textContent=
+          "No matching demo student found.";
+
+      return;
+
+    }
+
+    document
+      .getElementById("nameError")
+      .textContent="";
+
+    closeNameSearch();
+
+    showRecord(record);
+
+    document
+      .getElementById("results")
+      .scrollIntoView({
+        behavior:"smooth"
+      });
+
+  });
+
+</script>
+
+</body>
+</html>
