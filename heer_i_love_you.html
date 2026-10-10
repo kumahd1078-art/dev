@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heer, I Love You ❤️</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap');
+  :root { --pink:#ff6687; --deep:#090910; --white:#fff8fb; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--deep); color:var(--white); font-family:Poppins,Arial,sans-serif; }
+  nav { height:82px; padding:0 5%; display:flex; align-items:center; justify-content:space-between; gap:20px; background:rgba(6,7,14,.96); border-bottom:1px solid #28202a; }
+  .brand { display:flex; align-items:center; gap:14px; font:clamp(1.6rem,3vw,2.5rem) 'Great Vibes',cursive; white-space:nowrap; }
+  .brand span { color:var(--pink); font-family:Arial,sans-serif; font-size:2.4rem; }
+  nav a { color:#fff; text-decoration:none; margin-left:clamp(10px,2.3vw,34px); font-size:.92rem; }
+  nav a:hover { color:var(--pink); }
+  .hero { min-height:650px; height:76vh; max-height:850px; position:relative; overflow:hidden; display:grid; place-items:center; text-align:center; padding:40px 20px; background:
+    linear-gradient(90deg,rgba(7,5,15,.38),rgba(14,5,17,.12),rgba(7,5,15,.3)),
+    linear-gradient(0deg,rgba(7,5,12,.55),transparent 45%,rgba(12,6,20,.08)),
+    url('https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=2000&q=85') center 55%/cover; }
+  .hero:after { content:""; position:absolute; inset:0; background:radial-gradient(ellipse at center,transparent 15%,rgba(5,3,12,.32) 100%); pointer-events:none; }
+  .hero-content { position:relative; z-index:1; max-width:900px; }
+  .eyebrow { text-transform:uppercase; letter-spacing:.28em; font-size:.75rem; color:#ffe1e8; }
+  h1 { margin:18px 0 10px; font:clamp(4.2rem,12vw,9.5rem)/.9 'Great Vibes',cursive; color:#fff; text-shadow:0 0 12px #ff3f6b,0 0 38px rgba(255,65,108,.8); }
+  .love-line { font:clamp(2.7rem,7vw,5.6rem)/1.15 'Great Vibes',cursive; text-shadow:0 0 18px rgba(255,53,100,.8); }
+  .love-line span { color:#ff8ba5; }
+  .subtitle { margin:26px auto 20px; max-width:540px; font-size:clamp(1rem,2vw,1.25rem); line-height:1.8; letter-spacing:.04em; }
+  .tiny-heart { color:var(--pink); font-size:1.7rem; animation:pulse 1.5s infinite; }
+  .button { display:inline-block; margin-top:18px; padding:13px 25px; border:1px solid #ff829b; border-radius:999px; color:white; text-decoration:none; background:rgba(255,79,119,.15); transition:.2s; }
+  .button:hover { background:var(--pink); transform:translateY(-2px); }
+  .features { display:grid; grid-template-columns:repeat(4,1fr); padding:48px 5%; background:linear-gradient(120deg,#080910,#100912); }
+  .feature { text-align:center; padding:12px 22px; border-right:1px solid #30202c; }
+  .feature:last-child { border:0; }
+  .icon { color:var(--pink); font-size:2.6rem; line-height:1.2; }
+  .feature h2 { font-size:1.1rem; margin:12px 0 8px; }
+  .feature p { color:#e2dce2; line-height:1.8; font-size:.9rem; margin:0; }
+  section.message { text-align:center; padding:85px 20px 95px; background:radial-gradient(ellipse at top,#28101e,#090910 65%); }
+  section.message h2 { font:clamp(2.7rem,6vw,4.5rem) 'Great Vibes',cursive; color:#ff8ba5; margin:0 0 15px; }
+  section.message p { max-width:680px; margin:0 auto; line-height:2; color:#f0e5eb; }
+  footer { text-align:center; padding:24px; color:#b7a8b3; font-size:.85rem; border-top:1px solid #241b27; }
+  .petal { position:fixed; z-index:5; top:-30px; color:#ff7d9b; pointer-events:none; animation:fall linear forwards; text-shadow:0 0 8px #ff557c; }
+  @keyframes fall { to { transform:translateY(110vh) rotate(540deg); opacity:.15; } }
+  @keyframes pulse { 50% { transform:scale(1.22); } }
+  @media(max-width:760px) { nav { height:auto; padding:17px 5%; flex-direction:column; } nav a { margin:0 7px; font-size:.8rem; } .links { text-align:center; } .hero { min-height:570px; height:70vh; } .features { grid-template-columns:repeat(2,1fr); gap:20px 0; } .feature:nth-child(2) { border-right:0; } }
+  @media(max-width:430px) { .features { grid-template-columns:1fr; } .feature { border-right:0; border-bottom:1px solid #30202c; padding:22px 10px; } .feature:last-child { border-bottom:0; } .hero { min-height:540px; } }
+</style>
+</head>
+<body>
+<nav>
+  <div class="brand"><span>♡</span> Heer I Love You</div>
+  <div class="links">
+    <a href="#home">Home</a><a href="#about">About</a><a href="#why">Why You?</a><a href="#story">Our Story</a>
+  </div>
+</nav>
+
+<main>
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <div class="eyebrow">A little page, with a lot of love</div>
+      <h1>Heer</h1>
+      <div class="love-line"><span>♡</span> I Love You <span>♡</span></div>
+      <p class="subtitle">You are my today, my tomorrow,<br>and my always...</p>
+      <div class="tiny-heart">♥</div>
+      <a class="button" href="#about">Open my heart ↓</a>
+    </div>
+  </section>
+
+  <section class="features" id="why">
+    <article class="feature"><div class="icon">♡</div><h2>My Heart</h2><p>Forever and always,<br>it belongs to you.</p></article>
+    <article class="feature"><div class="icon">☆</div><h2>My Happiness</h2><p>You make my world<br>brighter just by being in it.</p></article>
+    <article class="feature"><div class="icon">∞</div><h2>My Forever</h2><p>No matter what,<br>I will always love you.</p></article>
+    <article class="feature"><div class="icon">♥</div><h2>Heer</h2><p>You are special,<br>you are amazing,<br>you are everything.</p></article>
+  </section>
+
+  <section class="message" id="about">
+    <h2>For You, Heer</h2>
+    <p>
+      If I could give you one thing in life, I would give you the ability to see yourself
+      through my eyes. Then you would know just how special you are to me.
+      This little website is a reminder that you are thought of, appreciated, and loved. ❤️
+    </p>
+    <a class="button" href="#story">One more thing…</a>
+  </section>
+
+  <section class="message" id="story">
+    <h2>My favorite feeling is you</h2>
+    <p>Heer, no fancy words could ever say it perfectly—but here is my simple truth:</p>
+    <div class="love-line" style="margin-top:18px">Heer, I love you. ♡</div>
+  </section>
+</main>
+<footer>Made with ♥ especially for Heer</footer>
+
+<script>
+  // Gentle floating hearts; no libraries needed.
+  function makeHeart() {
+    const heart = document.createElement('span');
+    heart.className = 'petal';
+    heart.textContent = Math.random() > 0.35 ? '♥' : '♡';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.fontSize = (12 + Math.random() * 17) + 'px';
+    const duration = 7 + Math.random() * 7;
+    heart.style.animationDuration = duration + 's';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), duration * 1000);
+  }
+  setInterval(makeHeart, 650);
+</script>
+</body>
+</html>
