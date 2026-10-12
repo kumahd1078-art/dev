@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AHMED BAGGY JEANS</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #111;
+    background: #fff;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+.search {
+    padding: 9px;
+    border: 1px solid #ddd;
+    width: 150px;
+}
+
+button {
+    cursor: pointer;
+    padding: 9px 12px;
+    border: 1px solid #ddd;
+    background: white;
+}
+
+.categories {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.categories button {
+    border: none;
+    text-transform: uppercase;
+}
+
+.categories button:hover {
+    text-decoration: underline;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 3px;
+}
+
+.product {
+    min-width: 0;
+    cursor: pointer;
+}
+
+.product-image {
+    width: 100%;
+    aspect-ratio: 0.68;
+    background: #edf0f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.product-image svg {
+    width: 100%;
+    height: 100%;
+}
+
+.product-info {
+    padding: 10px;
+}
+
+.product-info h3 {
+    font-size: 11px;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.product-info p {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.newsletter {
+    padding: 60px 10%;
+    display: grid;
+    grid-template-columns: 35% 65%;
+    gap: 20px;
+}
+
+.newsletter h2 {
+    font-size: 25px;
+}
+
+.newsletter input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-bottom: 1px solid #888;
+}
+
+.signup {
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: #000;
+    color: #fff;
+}
+
+footer {
+    background: #000;
+    color: #fff;
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+footer a {
+    color: white;
+    display: block;
+    margin: 10px 0;
+    text-decoration: none;
+}
+
+.cart-panel {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0008;
+    z-index: 20;
+    justify-content: flex-end;
+}
+
+.cart-content {
+    width: 380px;
+    max-width: 90%;
+    height: 100%;
+    overflow-y: auto;
+    background: white;
+    padding: 25px;
+}
+
+@media (max-width: 900px) {
+    .products {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    header {
+        padding: 14px 10px;
+    }
+
+    .logo {
+        font-size: 17px;
+    }
+
+    .search {
+        width: 85px;
+    }
+
+    .products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .newsletter {
+        grid-template-columns: 1fr;
+        padding: 35px 7%;
+    }
+
+    footer {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">AHMED BAGGY JEANS</div>
+
+    <input
+        class="search"
+        id="search"
+        type="search"
+        placeholder="Search jeans..."
+    >
+
+    <button onclick="toggleCart()">
+        BAG (<span id="cartCount">0</span>)
+    </button>
+</header>
+
+<nav class="categories">
+    <button onclick="filterProducts('All')">All</button>
+    <button onclick="filterProducts('Skinny')">Skinny</button>
+    <button onclick="filterProducts('Slim')">Slim</button>
+    <button onclick="filterProducts('Straight')">Straight</button>
+    <button onclick="filterProducts('Baggy')">Baggy</button>
+    <button onclick="filterProducts('Relaxed')">Relaxed</button>
+    <button onclick="filterProducts('Cargo')">Cargo</button>
+</nav>
+
+<main>
+    <section class="products" id="products"></section>
+</main>
+
+<section class="newsletter">
+    <h2>BE THE FIRST<br>TO KNOW</h2>
+
+    <form id="newsletterForm">
+        <p>
+            GET UPDATES ABOUT OUR LATEST COLLECTIONS
+            AND DISCOUNTS.
+        </p>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="ENTER YOUR EMAIL"
+            required
+        >
+
+        <button class="signup" type="submit">
+            SIGN ME UP!
+        </button>
+    </form>
+</section>
+
+<footer>
+    <div class="logo">AHMED BAGGY JEANS</div>
+
+    <div>
+        <a href="#">Shopping Guide</a>
+        <a href="#">About Us</a>
+        <a href="#">Shipping & Returns</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Payment</a>
+    </div>
+</footer>
+
+<div class="cart-panel" id="cartPanel">
+    <div class="cart-content">
+        <button onclick="toggleCart()">CLOSE ×</button>
+        <h2>YOUR BAG</h2>
+        <div id="cartItems"></div>
+        <h3 id="cartTotal">Subtotal: PKR 0</h3>
+        <button onclick="checkout()">CHECKOUT</button>
+    </div>
+</div>
+
+<script>
+const products = [
+    {
+        name: "Black Baggy Jeans",
+        category: "Baggy",
+        price: 6990,
+        color: "#171719"
+    },
+    {
+        name: "Light Blue Baggy Jeans",
+        category: "Baggy",
+        price: 6990,
+        color: "#93a9bc"
+    },
+    {
+        name: "Dark Blue Denim",
+        category: "Straight",
+        price: 6990,
+        color: "#29394e"
+    },
+    {
+        name: "Navy Blue Jeans",
+        category: "Slim",
+        price: 5990,
+        color: "#172747"
+    },
+    {
+        name: "Grey Baggy Jeans",
+        category: "Relaxed",
+        price: 6490,
+        color: "#62666a"
+    },
+    {
+        name: "Classic Blue Jeans",
+        category: "Straight",
+        price: 5990,
+        color: "#405d82"
+    },
+    {
+        name: "Cargo Denim Jeans",
+        category: "Cargo",
+        price: 7490,
+        color: "#292b2e"
+    },
+    {
+        name: "Cream Relaxed Jeans",
+        category: "Relaxed",
+        price: 6990,
+        color: "#d9d4c8"
+    },
+    {
+        name: "Vintage Denim Jeans",
+        category: "Baggy",
+        price: 7990,
+        color: "#334763"
+    },
+    {
+        name: "Washed Grey Jeans",
+        category: "Skinny",
+        price: 5490,
+        color: "#737779"
+    }
+];
+
+let cart = [];
+let activeCategory = "All";
+
+function jeanSVG(color) {
+    return `
+    <svg viewBox="0 0 300 440"
+         xmlns="http://www.w3.org/2000/svg">
+
+        <rect width="300" height="440" fill="#edf0f1"/>
+
+        <path d="M85 65 L215 65 L205 180
+                 L190 350 L155 350 L150 195
+                 L140 350 L105 350 L95 180 Z"
+              fill="${color}"
+              stroke="#26313c"
+              stroke-width="2"/>
+
+        <path d="M85 65 L215 65 L210 90
+                 L90 90 Z"
+              fill="${color}"
+              stroke="#26313c"/>
+
+        <path d="M150 85 L150 195"
+              stroke="#ffffff"
+              stroke-opacity=".25"
+              stroke-width="2"/>
+
+        <path d="M105 350 L140 350
+                 M155 350 L190 350"
+              stroke="#111"
+              stroke-width="4"/>
+
+        <circle cx="150" cy="77" r="3" fill="#c8b78a"/>
+    </svg>`;
+}
+
+function renderProducts() {
+    const searchTerm =
+        document.getElementById("search").value.toLowerCase();
+
+    const container = document.getElementById("products");
+    container.innerHTML = "";
+
+    const filtered = products.filter(product => {
+        const categoryMatch =
+            activeCategory === "All" ||
+            product.category === activeCategory;
+
+        const searchMatch =
+            product.name.toLowerCase().includes(searchTerm);
+
+        return categoryMatch && searchMatch;
+    });
+
+    filtered.forEach(product => {
+        const card = document.createElement("article");
+        card.className = "product";
+
+        card.innerHTML = `
+            <div class="product-image">
+                ${jeanSVG(product.color)}
+            </div>
+
+            <div class="product-info">
+                <h3>${product.name}</h3>
+                <small>${product.category} FIT | MEN</small>
+                <p>PKR ${product.price.toLocaleString("en-PK")}</p>
+                <button class="add-button">ADD TO BAG</button>
+            </div>
+        `;
+
+        card.querySelector(".add-button").addEventListener(
+            "click",
+            () => addToCart(product)
+        );
+
+        container.appendChild(card);
+    });
+
+    if (filtered.length === 0) {
+        container.innerHTML = "<p>No products found.</p>";
+    }
+}
+
+function filterProducts(category) {
+    activeCategory = category;
+    renderProducts();
+}
+
+function addToCart(product) {
+    cart.push(product);
+    updateCart();
+    alert(product.name + " added to your bag!");
+}
+
+function updateCart() {
+    document.getElementById("cartCount").textContent = cart.length;
+
+    const items = document.getElementById("cartItems");
+    items.innerHTML = "";
+
+    cart.forEach((product, index) => {
+        const item = document.createElement("p");
+
+        item.textContent =
+            `${product.name} — PKR ${product.price} `;
+
+        const remove = document.createElement("button");
+        remove.textContent = "Remove";
+
+        remove.onclick = () => {
+            cart.splice(index, 1);
+            updateCart();
+        };
+
+        item.appendChild(remove);
+        items.appendChild(item);
+    });
+
+    const total = cart.reduce(
+        (sum, product) => sum + product.price, 0
+    );
+
+    document.getElementById("cartTotal").textContent =
+        "Subtotal: PKR " + total.toLocaleString("en-PK");
+}
+
+function toggleCart() {
+    const panel = document.getElementById("cartPanel");
+
+    panel.style.display =
+        panel.style.display === "flex" ? "none" : "flex";
+}
+
+function checkout() {
+    if (cart.length === 0) {
+        alert("Your bag is empty!");
+        return;
+    }
+
+    alert(
+        "Demo checkout: connect a payment gateway " +
+        "to accept real orders."
+    );
+}
+
+document.getElementById("search").addEventListener(
+    "input",
+    renderProducts
+);
+
+document.getElementById("newsletterForm").addEventListener(
+    "submit",
+    function(event) {
+        event.preventDefault();
+        alert("Thanks for subscribing!");
+        this.reset();
+    }
+);
+
+renderProducts();
+</script>
+
+</body>
+</html>
