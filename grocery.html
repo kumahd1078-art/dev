@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mazin Grocery | Fresh Groceries, Better Life</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;color:#222}
+a{text-decoration:none;color:inherit}
+header{padding:20px 5%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee}
+.logo{font-size:36px;font-weight:900;color:#e51d2a;text-align:center}
+.logo small{display:block;font-size:13px;color:#222;letter-spacing:4px}
+nav{display:flex;justify-content:center;gap:25px;padding:16px;flex-wrap:wrap;border-bottom:1px solid #eee}
+nav a:hover{color:#e51d2a}
+.hero{margin:12px auto;max-width:1250px;height:300px;background:linear-gradient(90deg,#171717dd,#17171722),url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1600&q=85') center/cover;display:flex;align-items:center;color:white;padding:45px}
+.hero h1{font-size:42px;margin:0 0 15px}
+.btn,.add{background:#e51d2a;color:white;border:0;padding:12px 20px;border-radius:3px;cursor:pointer;font-weight:bold}
+.categories,.products{max-width:1200px;margin:22px auto;padding:0 15px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.cat{height:140px;background-size:cover;background-position:center;display:flex;align-items:end;color:white;padding:15px;font-weight:bold;border-radius:4px;text-shadow:1px 1px 4px black}
+h2{text-align:center;color:#e51d2a;margin:30px 0 15px}
+.toolbar{max-width:1150px;margin:15px auto;display:flex;gap:10px;padding:0 15px}
+input,select{padding:11px;border:1px solid #ddd;border-radius:3px}
+#search{flex:1}
+.products{grid-template-columns:repeat(4,1fr);gap:18px}
+.product{border:1px solid #e5e5e5;border-radius:4px;padding:10px;transition:.2s}
+.product:hover{box-shadow:0 5px 18px #0002;transform:translateY(-2px)}
+.product img{width:100%;height:190px;object-fit:contain}
+.product h3{font-size:14px}
+.price{color:#e51d2a;font-weight:bold}
+.product select{width:100%;margin:8px 0}
+.add{width:100%;padding:10px}
+.news{background:#f4f4f4;padding:28px;text-align:center}
+footer{background:#171717;color:white;padding:30px 7%;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer p{color:#ccc}
+#cart{position:fixed;right:20px;bottom:20px;background:#171717;color:white;padding:15px 20px;border-radius:8px;box-shadow:0 4px 15px #0003}
+@media(max-width:750px){
+ .categories,.products{grid-template-columns:repeat(2,1fr)}
+ .hero{height:240px;padding:25px}
+ .hero h1{font-size:30px}
+ header{padding:15px}
+ .logo{font-size:27px}
+ nav{gap:14px}
+}
+@media(max-width:420px){
+ .categories,.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .product img{height:130px}
+ .hero h1{font-size:26px}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div><a href="#products">Shop</a>　<a href="#about">About</a></div>
+<a class="logo" href="#">MAZIN<small>GROCERY</small></a>
+<div>Login　 🛒 <span id="count">0</span></div>
+</header>
+
+<nav>
+<a href="#products">All Products</a>
+<a href="#products">Groceries</a>
+<a href="#products">Snacks & Chips</a>
+<a href="#products">Beverages</a>
+<a href="#products">Household</a>
+<a href="#products">Personal Care</a>
+</nav>
+
+<section class="hero">
+<div>
+<h1>Fresh Groceries,<br>Better Life</h1>
+<p>Quality Products　 •　 Best Prices　 •　 Home Delivery</p>
+<a class="btn" href="#products">Shop Now →</a>
+</div>
+</section>
+
+<section class="categories">
+<a class="cat" style="background-image:linear-gradient(transparent,#0009),url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=500&q=80')" href="#products">Spices & Seasonings</a>
+<a class="cat" style="background-image:linear-gradient(transparent,#0009),url('https://images.unsplash.com/photo-1621939514649-280e2aa2b8c2?auto=format&fit=crop&w=500&q=80')" href="#products">Snacks & Chips</a>
+<a class="cat" style="background-image:linear-gradient(transparent,#0009),url('https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=500&q=80')" href="#products">Beverages</a>
+<a class="cat" style="background-image:linear-gradient(transparent,#0009),url('https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=500&q=80')" href="#products">Household Essentials</a>
+</section>
+
+<h2>FEATURED PRODUCTS</h2>
+<div class="toolbar">
+<input id="search" placeholder="Search groceries..." oninput="renderProducts()">
+<select id="category" onchange="renderProducts()">
+<option value="All">All Categories</option>
+<option>Groceries</option><option>Snacks</option>
+<option>Beverages</option><option>Household</option>
+</select>
+</div>
+
+<section class="products" id="products"></section>
+
+<section class="news">
+<h3>JOIN OUR NEWSLETTER</h3>
+<p>Get the latest updates and special offers delivered to your inbox.</p>
+<form onsubmit="event.preventDefault();alert('Thanks for subscribing!')">
+<input type="email" placeholder="Enter your email address" required>
+<button class="btn">Subscribe</button>
+</form>
+</section>
+
+<footer id="about">
+<div><div class="logo">MAZIN<small>GROCERY</small></div><p>Quality Products • Best Prices • Home Delivery</p></div>
+<div><h3>Quick Links</h3><p><a href="#">Home</a></p><p><a href="#products">Products</a></p><p><a href="#about">About Us</a></p></div>
+<div><h3>Categories</h3><p>Groceries</p><p>Snacks & Chips</p><p>Beverages</p></div>
+<div><h3>Contact Us</h3><p>📍 Pakistan</p><p>✉ info@mazingrocery.com</p></div>
+</footer>
+
+<div id="cart">🛒 Cart: <span id="cartTotal">Rs. 0</span></div>
+
+<script>
+const products=[
+{name:"National Mixed Pickle",price:399,size:"1 Kg",cat:"Groceries",img:"https://images.unsplash.com/photo-1589135233689-0b8f8e1c6c6c?auto=format&fit=crop&w=500&q=80"},
+{name:"Shan Biryani Masala",price:170,size:"50 g",cat:"Groceries",img:"https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=500&q=80"},
+{name:"National Tomato Ketchup",price:320,size:"1 Kg",cat:"Groceries",img:"https://images.unsplash.com/photo-1472476443507-c7a5948772fc?auto=format&fit=crop&w=500&q=80"},
+{name:"Nestle Milk Pack",price:350,size:"400 g",cat:"Groceries",img:"https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=500&q=80"},
+{name:"Tang Orange",price:450,size:"500 g",cat:"Groceries",img:"https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=500&q=80"},
+{name:"Lipton Yellow Label Tea",price:650,size:"375 g",cat:"Groceries",img:"https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=500&q=80"},
+{name:"Americana Pasta",price:280,size:"500 g",cat:"Groceries",img:"https://images.unsplash.com/photo-1551462147-ff29053bfc14?auto=format&fit=crop&w=500&q=80"},
+{name:"Dalda Cooking Oil",price:1250,size:"5 Ltr",cat:"Groceries",img:"https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=500&q=80"},
+{name:"Tata Salt",price:90,size:"1 Kg",cat:"Groceries",img:"https://images.unsplash.com/photo-1518110925495-5fe2fda0442b?auto=format&fit=crop&w=500&q=80"},
+{name:"Colgate Toothpaste",price:280,size:"100 g",cat:"Household",img:"https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=500&q=80"},
+{name:"Lux Soap",price:160,size:"150 g",cat:"Household",img:"https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec?auto=format&fit=crop&w=500&q=80"},
+{name:"Rin Detergent Powder",price:420,size:"1 Kg",cat:"Household",img:"https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?auto=format&fit=crop&w=500&q=80"},
+{name:"Nescafe Classic",price:1080,size:"200 g",cat:"Groceries",img:"https://images.unsplash.com/photo-1559525839-b184a4d698c7?auto=format&fit=crop&w=500&q=80"},
+{name:"Quaker Oats",price:750,size:"500 g",cat:"Groceries",img:"https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80"},
+{name:"Surf Excel",price:360,size:"1 Kg",cat:"Household",img:"https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&w=500&q=80"},
+{name:"Pepsi",price:220,size:"1.5 Ltr",cat:"Beverages",img:"https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=500&q=80"},
+{name:"Potato Chips",price:150,size:"100 g",cat:"Snacks",img:"https://images.unsplash.com/photo-1566478989037-eec170784d0b?auto=format&fit=crop&w=500&q=80"},
+{name:"Chocolate Biscuits",price:180,size:"200 g",cat:"Snacks",img:"https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=500&q=80"},
+{name:"Orange Juice",price:250,size:"1 Ltr",cat:"Beverages",img:"https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=500&q=80"},
+{name:"Fresh Apples",price:350,size:"1 Kg",cat:"Groceries",img:"https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=500&q=80"}
+];
+
+let cartCount=0,cartTotal=0;
+
+function renderProducts(){
+ const search=document.getElementById('search').value.toLowerCase();
+ const category=document.getElementById('category').value;
+ const list=products.filter(p=>
+  p.name.toLowerCase().includes(search)&&
+  (category==="All"||p.cat===category)
+ );
+ document.getElementById('products').innerHTML=list.map((p,i)=>`
+ <article class="product">
+ <img src="${p.img}" alt="${p.name}" loading="lazy">
+ <h3>${p.name}</h3>
+ <div class="price">Rs. ${p.price.toLocaleString()}</div>
+ <select aria-label="Choose size"><option>${p.size}</option></select>
+ <button class="add" onclick="addToCart(${products.indexOf(p)})">Add to Cart</button>
+ </article>`).join('');
+}
+
+function addToCart(i){
+ cartCount++;
+ cartTotal+=products[i].price;
+ document.getElementById('count').textContent=cartCount;
+ document.getElementById('cartTotal').textContent='Rs. '+cartTotal.toLocaleString();
+}
+renderProducts();
+</script>
+</body>
+</html>
